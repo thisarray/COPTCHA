@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COPTCHA</title>
+  <style type="text/css" media="screen">
+body {
+  background-color: white;
+  color: black;
+}
+.hidden {
+  display: none;
+}
+canvas {
+  display: block;
+  margin: 1em;
+}
+  </style>
+</head>
+
+<body>
+<section id="imageLoader" class="hidden">
+  <img class="hidden" src="images/background0.png" alt="background0" data-name="background0">
+</section>
+
+<main>
+<h1>COPTCHA</h1>
+
+<p>Are you a cop? You've gotta tell me if you are a cop.</p>
+
+<p>Select all squares with a gun.</p>
+
+<canvas id="screen"></canvas>
+
+</main>
+
+<script>
+const SCREEN = document.querySelector('#screen');
+
+const SIZE = 120;
+
+const WIDTH = 4 * SIZE;
+
+const HEIGHT = 4 * SIZE;
+
+let image, offsetX, offsetY;
+
+function draw() {
+  let context = SCREEN.getContext('2d');
+  context.drawImage(image, offsetX, offsetY, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT);
+}
+
+window.addEventListener('load', (event) => {
+  SCREEN.width = WIDTH;
+  SCREEN.height = HEIGHT;
+
+  image = document.images[0];
+  offsetX = image.width - WIDTH;
+  offsetY = image.height - HEIGHT;
+
+  draw();
+});
+</script>
+</body>
+
+</html>
