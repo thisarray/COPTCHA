@@ -39,11 +39,30 @@ canvas {
 <script>
 const SCREEN = document.querySelector('#screen');
 
+/*
+ * Integer size in pixels of each square.
+ */
 const SIZE = 120;
 
-const WIDTH = 4 * SIZE;
+/*
+ * Integer number of rows.
+ */
+const ROW_COUNT = 4;
 
-const HEIGHT = 4 * SIZE;
+/*
+ * Integer number of columns.
+ */
+const COLUMN_COUNT = 4;
+
+/*
+ * Integer width in pixels of the image.
+ */
+const WIDTH = COLUMN_COUNT * SIZE;
+
+/*
+ * Integer height in pixels of the image.
+ */
+const HEIGHT = ROW_COUNT * SIZE;
 
 let image, offsetX, offsetY;
 
