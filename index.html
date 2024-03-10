@@ -64,6 +64,155 @@ const WIDTH = COLUMN_COUNT * SIZE;
  */
 const HEIGHT = ROW_COUNT * SIZE;
 
+/*
+ * Track the selected squares.
+ */
+class Grid {
+  constructor(width, height) {
+    if (typeof width !== 'number') {
+      throw new TypeError('width must be a number.');
+    }
+    if (typeof height !== 'number') {
+      throw new TypeError('height must be a number.');
+    }
+
+    this.width = Math.max(1, width);
+    this.height = Math.max(1, height);
+    this.squares = new Array(this.width * this.height).fill(false);
+  }
+
+  /*
+   * Return the index for coordinates (x, y).
+   */
+  _coordinatesToIndex(x, y) {
+    return x + (y * this.width);
+  }
+
+  /*
+   * Return true if the user is a cop.
+   */
+  isCop() {
+    return this.squares.every(s => s);
+  }
+
+  /*
+   * Return true if the square at coordinates (x, y) is selected. False otherwise.
+   */
+  isSelected(x, y) {
+    if (typeof x !== 'number') {
+      throw new TypeError('x must be a number.');
+    }
+    if (typeof y !== 'number') {
+      throw new TypeError('y must be a number.');
+    }
+
+    if (x < 0) {
+      return false;
+    }
+    if (y < 0) {
+      return false;
+    }
+    if (this.width <= x) {
+      return false;
+    }
+    if (this.height <= y) {
+      return false;
+    }
+    return this.squares[this._coordinatesToIndex(x, y)];
+  }
+
+  /*
+   * Select the square at coordinates (x, y) if it is not selected and vice versa.
+   */
+  toggle(x, y) {
+    if (typeof x !== 'number') {
+      throw new TypeError('x must be a number.');
+    }
+    if (typeof y !== 'number') {
+      throw new TypeError('y must be a number.');
+    }
+
+    if (x < 0) {
+      return;
+    }
+    if (y < 0) {
+      return;
+    }
+    if (this.width <= x) {
+      return;
+    }
+    if (this.height <= y) {
+      return;
+    }
+
+    let index = this._coordinatesToIndex(x, y);
+    this.squares[index] = !this.squares[index];
+  }
+
+  /*
+   * A short test suite to confirm the Grid class works.
+   */
+  static test() {
+    let grid = new Grid(COLUMN_COUNT, ROW_COUNT),
+        index = 0;
+    console.assert(grid.width === COLUMN_COUNT,
+                   {msg: 'grid.width is incorrect.'});
+    console.assert(grid.height === ROW_COUNT,
+                   {msg: 'grid.height is incorrect.'});
+    console.assert(grid.squares.every(s => (!s)),
+                   {msg: 'grid.squares is incorrect.'});
+    console.assert(!grid.isCop(),
+                   {msg: 'grid.isCop() failed.'});
+    for (let [x, y] of [
+      [-1, 0],
+      [0, -1],
+      [COLUMN_COUNT, 0],
+      [0, ROW_COUNT]]) {
+      console.assert(!grid.isSelected(x, y),
+                     {msg: 'grid.isSelected() failed.'});
+      grid.toggle(x, y);
+      console.assert(!grid.isSelected(x, y),
+                     {msg: 'grid.isSelected() failed.'});
+    }
+    for (let y = 0; y < ROW_COUNT; y++) {
+      for (let x = 0; x < COLUMN_COUNT; x++) {
+        console.assert(!grid.isCop(),
+                       {msg: 'grid.isCop() failed.'});
+
+        console.assert(!grid.squares[index],
+                       {msg: 'grid.squares is incorrect.'});
+        console.assert(!grid.isSelected(x, y),
+                       {msg: 'grid.isSelected() failed.'});
+        grid.toggle(x, y);
+        console.assert(grid.squares[index],
+                       {msg: 'grid.squares is incorrect.'});
+        console.assert(grid.isSelected(x, y),
+                       {msg: 'grid.isSelected() failed.'});
+        grid.toggle(x, y);
+        console.assert(!grid.squares[index],
+                       {msg: 'grid.squares is incorrect.'});
+        console.assert(!grid.isSelected(x, y),
+                       {msg: 'grid.isSelected() failed.'});
+        grid.toggle(x, y);
+        console.assert(grid.squares[index],
+                       {msg: 'grid.squares is incorrect.'});
+        console.assert(grid.isSelected(x, y),
+                       {msg: 'grid.isSelected() failed.'});
+
+        console.assert(grid._coordinatesToIndex(x, y) === index,
+                       {msg: 'grid._coordinatesToIndex() failed.'});
+        index++;
+      }
+    }
+
+    console.assert(grid.squares.every(s => s),
+                   {msg: 'grid.squares is incorrect.'});
+    console.assert(grid.isCop(),
+                   {msg: 'grid.isCop() failed.'});
+  }
+}
+Grid.test();
+
 let image, offsetX, offsetY;
 
 function draw() {
