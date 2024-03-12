@@ -213,11 +213,26 @@ class Grid {
 }
 Grid.test();
 
-let image, offsetX, offsetY;
+let image, offsetX, offsetY, grid;
 
 function draw() {
-  let context = SCREEN.getContext('2d');
+  let context = SCREEN.getContext('2d'),
+      thickness;
   context.drawImage(image, offsetX, offsetY, WIDTH, HEIGHT, 0, 0, WIDTH, HEIGHT);
+
+  context.strokeStyle = 'white';
+  for (let y = 0; y < ROW_COUNT; y++) {
+    for (let x = 0; x < COLUMN_COUNT; x++) {
+      if (grid.isSelected(x, y)) {
+        thickness = 16;
+      }
+      else {
+        thickness = 2;
+      }
+      context.lineWidth = thickness;
+      context.strokeRect((x * SIZE) + Math.floor(thickness / 2), (y * SIZE) + Math.floor(thickness / 2), SIZE - thickness, SIZE - thickness);
+    }
+  }
 }
 
 window.addEventListener('load', (event) => {
@@ -227,6 +242,7 @@ window.addEventListener('load', (event) => {
   image = document.images[0];
   offsetX = image.width - WIDTH;
   offsetY = image.height - HEIGHT;
+  grid = new Grid(COLUMN_COUNT, ROW_COUNT);
 
   draw();
 });
