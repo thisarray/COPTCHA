@@ -235,6 +235,25 @@ function draw() {
   }
 }
 
+SCREEN.addEventListener('click', (event) => {
+  // Use SCREEN because event.target may be a child of SCREEN
+  let box = SCREEN.getBoundingClientRect(),
+      x = Math.min(Math.floor((event.clientX - box.left) / SIZE), COLUMN_COUNT - 1),
+      y = Math.min(Math.floor((event.clientY - box.top) / SIZE), ROW_COUNT - 1);
+  if (x < 0) {
+    x = 0;
+  }
+  if (y < 0) {
+    y = 0;
+  }
+  grid.toggle(x, y);
+  draw();
+
+  if (grid.isCop()) {
+    alert('You are a cop!');
+  }
+});
+
 window.addEventListener('load', (event) => {
   SCREEN.width = WIDTH;
   SCREEN.height = HEIGHT;
