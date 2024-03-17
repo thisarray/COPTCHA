@@ -80,6 +80,15 @@ const WIDTH = COLUMN_COUNT * SIZE;
 const HEIGHT = ROW_COUNT * SIZE;
 
 /*
+ * Return a random integer N such that min <= N < max.
+ */
+function getRandomInteger(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor((Math.random() * (max - min)) + min);
+}
+
+/*
  * Track the selected squares.
  */
 class Grid {
@@ -273,7 +282,7 @@ window.addEventListener('load', (event) => {
   SCREEN.width = WIDTH;
   SCREEN.height = HEIGHT;
 
-  image = document.images[10];
+  image = document.images[getRandomInteger(0, document.images.length)];
   offsetX = image.width - WIDTH;
   offsetY = image.height - HEIGHT;
   grid = new Grid(COLUMN_COUNT, ROW_COUNT);
