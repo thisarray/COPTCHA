@@ -283,8 +283,8 @@ window.addEventListener('load', (event) => {
   SCREEN.height = HEIGHT;
 
   image = document.images[getRandomInteger(0, document.images.length)];
-  offsetX = image.width - WIDTH;
-  offsetY = image.height - HEIGHT;
+  offsetX = Math.floor(image.width / 2) - WIDTH;
+  offsetY = Math.floor(image.height / 2) - Math.floor(HEIGHT / 2);
   grid = new Grid(COLUMN_COUNT, ROW_COUNT);
 
   draw();
